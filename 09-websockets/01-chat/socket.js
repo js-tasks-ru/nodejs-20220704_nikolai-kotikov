@@ -13,13 +13,13 @@ function socket(server) {
     const token = socket.handshake.query.token;
 
     if (!token) {
-      next(new Error('anonymous sessions are not allowed'));
+      return next(new Error('anonymous sessions are not allowed'));
     }
 
     const session = await Session.findOne({token});
 
     if (!session) {
-      next(new Error('wrong or expired session token'));
+      return next(new Error('wrong or expired session token'));
     }
 
     socket.user = await User.findOne({token});
